@@ -11,13 +11,13 @@ import java.util.Optional;
 
 public class ClienteService {
 
-    // --- C (Create) - Criar Cliente (4 colunas) ---
+
     public Cliente criarCliente(String cpf, String nome, String sobrenome, String telefone) {
         if (buscarClientePorCpf(cpf).isPresent()) {
             return null;
         }
 
-        // SQL atualizado para 4 colunas
+
         String sql = "INSERT INTO Cliente (cpf, nome, sobrenome, telefone) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -38,7 +38,7 @@ public class ClienteService {
         }
     }
 
-    // --- R (Read) - Listar Todos os Clientes (4 colunas) ---
+
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = new ArrayList<>();
         String sql = "SELECT cpf, nome, sobrenome, telefone FROM Cliente";
@@ -62,7 +62,7 @@ public class ClienteService {
         return clientes;
     }
 
-    // --- R (Read) - Buscar Cliente por CPF ---
+
     public Optional<Cliente> buscarClientePorCpf(String cpf) {
         String sql = "SELECT cpf, nome, sobrenome, telefone FROM Cliente WHERE cpf = ?";
 
@@ -88,9 +88,9 @@ public class ClienteService {
         return Optional.empty();
     }
 
-    // --- U (Update) - Atualizar Cliente (4 colunas) ---
+
     public boolean atualizarCliente(String cpf, String nome, String sobrenome, String telefone) {
-        // SQL atualizado: removeu 'primeiro_nome' do SET
+
         String sql = "UPDATE Cliente SET nome = ?, sobrenome = ?, telefone = ? WHERE cpf = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -110,7 +110,7 @@ public class ClienteService {
         }
     }
 
-    // --- D (Delete) - Excluir Cliente ---
+
     public boolean excluirCliente(String cpf) {
         String sql = "DELETE FROM Cliente WHERE cpf = ?";
 

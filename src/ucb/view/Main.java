@@ -13,7 +13,7 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // ... (código do menu permanece o mesmo)
+
         int opcao;
 
         do {
@@ -57,7 +57,7 @@ public class Main {
         String cpf = scanner.nextLine();
 
         if (service.buscarClientePorCpf(cpf).isPresent()) {
-            System.out.println("❌ Erro: Cliente com CPF " + cpf + " já existe!");
+            System.out.println(" Erro: Cliente com CPF " + cpf + " já existe!");
             return;
         }
 
@@ -70,14 +70,14 @@ public class Main {
         System.out.print("Digite o Telefone: ");
         String telefone = scanner.nextLine();
 
-        // Chamada atualizada (SEM primeiroNome)
+
         Cliente novo = service.criarCliente(cpf, nome, sobrenome, telefone);
 
         if (novo != null) {
-            System.out.println("\n✅ Cliente criado com sucesso!");
+            System.out.println("\n Cliente criado com sucesso!");
             System.out.println(novo);
         } else {
-            System.out.println("❌ Falha na criação ou CPF já existe.");
+            System.out.println(" Falha na criação ou CPF já existe.");
         }
     }
 
@@ -100,7 +100,7 @@ public class Main {
         Optional<Cliente> clienteExistente = service.buscarClientePorCpf(cpf);
 
         if (clienteExistente.isEmpty()) {
-            System.out.println("❌ Cliente com CPF " + cpf + " não encontrado.");
+            System.out.println(" Cliente com CPF " + cpf + " não encontrado.");
             return;
         }
 
@@ -120,12 +120,12 @@ public class Main {
         String sobrenomeFinal = novoSobrenome.isEmpty() ? cliente.getSobrenome() : novoSobrenome;
         String telefoneFinal = novoTelefone.isEmpty() ? cliente.getTelefone() : novoTelefone;
 
-        // Chamada atualizada (SEM primeiroNome)
+
         if (service.atualizarCliente(cpf, nomeFinal, sobrenomeFinal, telefoneFinal)) {
-            System.out.println("\n✅ Cliente CPF " + cpf + " atualizado com sucesso!");
+            System.out.println("\n Cliente CPF " + cpf + " atualizado com sucesso!");
             service.buscarClientePorCpf(cpf).ifPresent(System.out::println);
         } else {
-            System.out.println("❌ Falha ao atualizar. Tente novamente.");
+            System.out.println(" Falha ao atualizar. Tente novamente.");
         }
     }
 
@@ -135,9 +135,9 @@ public class Main {
         String cpf = scanner.nextLine();
 
         if (service.excluirCliente(cpf)) {
-            System.out.println("\n🗑️ Cliente com CPF " + cpf + " excluído com sucesso.");
+            System.out.println("\n🗑 Cliente com CPF " + cpf + " excluído com sucesso.");
         } else {
-            System.out.println("❌ Cliente com CPF " + cpf + " não encontrado.");
+            System.out.println(" Cliente com CPF " + cpf + " não encontrado.");
         }
     }
 }

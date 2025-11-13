@@ -6,7 +6,7 @@ public class Cliente {
     private String sobrenome;
     private String telefone;
 
-    // Construtor atualizado (SEM primeiroNome)
+
     public Cliente(String cpf, String nome, String sobrenome, String telefone) {
         this.cpf = cpf;
         this.nome = nome;
@@ -14,7 +14,7 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    // Getters e Setters
+
     public String getCpf() { return cpf; }
     public String getNome() { return nome; }
     public String getSobrenome() { return sobrenome; }
