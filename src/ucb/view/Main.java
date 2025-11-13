@@ -7,40 +7,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-
-
 public class Main {
 
-    private static ClienteService service = new ClienteService(); // Usa ClienteService
+    private static ClienteService service = new ClienteService();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // ... (código do menu permanece o mesmo)
         int opcao;
 
         do {
             exibirMenu();
             if (scanner.hasNextInt()) {
                 opcao = scanner.nextInt();
-                scanner.nextLine(); // Consumir a nova linha
+                scanner.nextLine();
 
                 switch (opcao) {
-                    case 1:
-                        criarCliente();
-                        break;
-                    case 2:
-                        listarClientes();
-                        break;
-                    case 3:
-                        atualizarCliente();
-                        break;
-                    case 4:
-                        excluirCliente();
-                        break;
-                    case 0:
-                        System.out.println("Saindo do sistema. Até mais!");
-                        break;
-                    default:
-                        System.out.println("Opção inválida. Tente novamente.");
+                    case 1: criarCliente(); break;
+                    case 2: listarClientes(); break;
+                    case 3: atualizarCliente(); break;
+                    case 4: excluirCliente(); break;
+                    case 0: System.out.println("Saindo do sistema. Até mais!"); break;
+                    default: System.out.println("Opção inválida. Tente novamente.");
                 }
             } else {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -52,7 +40,6 @@ public class Main {
 
         scanner.close();
     }
-
 
     private static void exibirMenu() {
         System.out.println("========= MENU CRUD CLIENTE =========");
@@ -69,28 +56,29 @@ public class Main {
         System.out.print("Digite o CPF do cliente (ID): ");
         String cpf = scanner.nextLine();
 
-
         if (service.buscarClientePorCpf(cpf).isPresent()) {
-            System.out.println(" Erro: Cliente com CPF " + cpf + " já existe!");
+            System.out.println("❌ Erro: Cliente com CPF " + cpf + " já existe!");
             return;
         }
 
-        System.out.print("Digite o Nome (Nome completo): ");
+        System.out.print("Digite o Nome: ");
         String nome = scanner.nextLine();
 
         System.out.print("Digite o Sobrenome: ");
         String sobrenome = scanner.nextLine();
 
-        System.out.print("Digite o Primeiro Nome (Primeiro): ");
-        String primeiroNome = scanner.nextLine();
-
         System.out.print("Digite o Telefone: ");
         String telefone = scanner.nextLine();
 
-        Cliente novo = service.criarCliente(cpf, nome, sobrenome, primeiroNome, telefone);
+        // Chamada atualizada (SEM primeiroNome)
+        Cliente novo = service.criarCliente(cpf, nome, sobrenome, telefone);
 
-        System.out.println("\n Cliente criado com sucesso!");
-        System.out.println(novo);
+        if (novo != null) {
+            System.out.println("\n✅ Cliente criado com sucesso!");
+            System.out.println(novo);
+        } else {
+            System.out.println("❌ Falha na criação ou CPF já existe.");
+        }
     }
 
     private static void listarClientes() {
@@ -101,7 +89,6 @@ public class Main {
             System.out.println("Nenhum cliente cadastrado.");
             return;
         }
-
         clientes.forEach(System.out::println);
     }
 
@@ -113,13 +100,12 @@ public class Main {
         Optional<Cliente> clienteExistente = service.buscarClientePorCpf(cpf);
 
         if (clienteExistente.isEmpty()) {
-            System.out.println(" Cliente com CPF " + cpf + " não encontrado.");
+            System.out.println("❌ Cliente com CPF " + cpf + " não encontrado.");
             return;
         }
 
         Cliente cliente = clienteExistente.get();
         System.out.println("Cliente atual: " + cliente);
-
 
         System.out.print("Digite o NOVO Nome (Atual: " + cliente.getNome() + " | Deixe em branco para manter): ");
         String novoNome = scanner.nextLine();
@@ -127,27 +113,21 @@ public class Main {
         System.out.print("Digite o NOVO Sobrenome (Atual: " + cliente.getSobrenome() + " | Deixe em branco para manter): ");
         String novoSobrenome = scanner.nextLine();
 
-        System.out.print("Digite o NOVO Primeiro Nome (Atual: " + cliente.getPrimeiroNome() + " | Deixe em branco para manter): ");
-        String novoPrimeiroNome = scanner.nextLine();
-
         System.out.print("Digite o NOVO Telefone (Atual: " + cliente.getTelefone() + " | Deixe em branco para manter): ");
         String novoTelefone = scanner.nextLine();
 
-
         String nomeFinal = novoNome.isEmpty() ? cliente.getNome() : novoNome;
         String sobrenomeFinal = novoSobrenome.isEmpty() ? cliente.getSobrenome() : novoSobrenome;
-        String primeiroNomeFinal = novoPrimeiroNome.isEmpty() ? cliente.getPrimeiroNome() : novoPrimeiroNome;
         String telefoneFinal = novoTelefone.isEmpty() ? cliente.getTelefone() : novoTelefone;
 
-
-        if (service.atualizarCliente(cpf, nomeFinal, sobrenomeFinal, primeiroNomeFinal, telefoneFinal)) {
-            System.out.println("\n Cliente CPF " + cpf + " atualizado com sucesso!");
+        // Chamada atualizada (SEM primeiroNome)
+        if (service.atualizarCliente(cpf, nomeFinal, sobrenomeFinal, telefoneFinal)) {
+            System.out.println("\n✅ Cliente CPF " + cpf + " atualizado com sucesso!");
             service.buscarClientePorCpf(cpf).ifPresent(System.out::println);
         } else {
-            System.out.println(" Falha ao atualizar. Tente novamente.");
+            System.out.println("❌ Falha ao atualizar. Tente novamente.");
         }
     }
-
 
     private static void excluirCliente() {
         System.out.println("\n--- EXCLUIR CLIENTE ---");
@@ -155,9 +135,9 @@ public class Main {
         String cpf = scanner.nextLine();
 
         if (service.excluirCliente(cpf)) {
-            System.out.println("\n🗑 Cliente com CPF " + cpf + " excluído com sucesso.");
+            System.out.println("\n🗑️ Cliente com CPF " + cpf + " excluído com sucesso.");
         } else {
-            System.out.println(" Cliente com CPF " + cpf + " não encontrado.");
+            System.out.println("❌ Cliente com CPF " + cpf + " não encontrado.");
         }
     }
 }
