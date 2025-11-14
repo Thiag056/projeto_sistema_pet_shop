@@ -26,7 +26,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        // Exibindo apenas o que existe no banco
+
         return "CPF: " + cpf +
                 " | Nome: " + nome +
                 " | Sobrenome: " + sobrenome +
