@@ -110,7 +110,6 @@ public class ClienteService {
         }
     }
 
-
     public boolean excluirCliente(String cpf) {
         String sql = "DELETE FROM Cliente WHERE cpf = ?";
 
